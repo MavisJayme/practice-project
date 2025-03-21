@@ -1,0 +1,59 @@
+class Order:
+    def __init__(self):
+        self.menu = {
+            "Pizza": 10.00,
+            "Burger": 5.00,
+            "Pasta": 7.00,
+            "Salad": 3.50,
+            "Soda": 1.50
+        }
+        self.order_items = []
+        self.total_price = 0.0
+
+    def display_menu(self):
+        print("\n--- Menu ---")
+        for item, price in self.menu.items():
+            print(f"{item}: ${price:.2f}")
+        print("----------------------------")
+
+    def take_order(self):
+        while True:
+            item = input("\nEnter the item you want to order (or 'done' to finish): ").capitalize()
+            if item == "Done":
+                break
+            elif item in self.menu:
+                quantity = int(input(f"How many {item}s would you like? "))
+                self.order_items.append((item, quantity))
+                self.total_price += self.menu[item] * quantity
+            else:
+                print(f"{item} is not on the menu. Please choose from the available options.")
+                
+    def show_order(self):
+        print("\n--- Your Order ---")
+        for item, quantity in self.order_items:
+            print(f"{item}: {quantity} x ${self.menu[item]:.2f} = ${self.menu[item] * quantity:.2f}")
+        print(f"\nTotal: ${self.total_price:.2f}")
+        
+    def process_payment(self):
+        print(f"\nYour total is: ${self.total_price:.2f}")
+        while True:
+            try:
+                payment = float(input("Enter payment amount: $"))
+                if payment < self.total_price:
+                    print("Insufficient funds. Please enter a higher amount.")
+                else:
+                    change = payment - self.total_price
+                    print(f"Payment successful! Your change is: ${change:.2f}")
+                    break
+            except ValueError:
+                print("Invalid amount. Please enter a valid number.")
+
+def main():
+    order = Order()
+    order.display_menu()
+    order.take_order()
+    order.show_order()
+    order.process_payment()
+
+if __name__ == "__main__":
+    main()
